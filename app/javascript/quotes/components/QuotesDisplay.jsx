@@ -6,7 +6,7 @@ import axios from 'axios';
 
 //Criando a classe QuotesDisplay
 
-class QuotesDisplay extends React.component{
+class QuotesDisplay extends React.Component{
 	
 	constructor(){
 		super();
@@ -32,7 +32,7 @@ class QuotesDisplay extends React.component{
 
 			this.quoteId = Number(this.qsParams.quote);
 		}else{
-			this.quoteId = 1;
+			this.quoteId = this.props.startingQuoteId;
 
 			// update URL in browser to reflect current quote in query string
 			this.props.history.push(`/?quotes/${this.quoteId}`);
@@ -50,17 +50,30 @@ class QuotesDisplay extends React.component{
 	}
 
 	render() {
-		const nextQuoteId = Number(this.state.quote.id) + 1;
+		const quote = this.state.quote
+  		const nextQuoteId = quote.next_id
+  		const previousQuoteId = quote.previous_id
 
 	  	return (
 	  		<div>
-	  			<Link to={`/?quote=${nextQuoteId}`}>Next</Link>
+	  			{previousQuoteId &&
+    				<Link to={`/?quote=${previousQuoteId}`}>
+          				Previous 
+        			</Link>
+       			}
+
+		       {nextQuoteId &&
+		         <Link to={`/?quote=${nextQuoteId}`}>
+		           Next
+		         </Link>
+       			}
+
 	  			<p>{ this.state.quote.text }</p>
 	  			<p>{ this.state.quote.author }</p>
 	  		</div>
-	  	);
+	  	)
 	}
-	
+
 }
 
 
